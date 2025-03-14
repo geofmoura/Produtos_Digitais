@@ -1,1 +1,1 @@
-# Produtos_Digitais
+# Projeto E-commerce de produtos digitais.
