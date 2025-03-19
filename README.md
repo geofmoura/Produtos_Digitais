@@ -1,1 +1,2 @@
-# Projeto E-commerce de produtos digitais.
+# Projeto de vendas de produtos digitais. <br>
+### Este é um sistema de vendas de produtos digitais desenvolvido com HTML, CSS, PHP e JavaScript, utilizando um banco de dados SQL para armazenar informações de usuários, produtos e transações. O sistema permite que os usuários realizem login ou cadastro, acessem uma tela de produtos, utilizem uma barra de pesquisa, adicionem itens ao carrinho e simulem a finalização da compra.
