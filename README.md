@@ -24,6 +24,8 @@ Este é um sistema de vendas de produtos digitais desenvolvido com HTML, CSS, PH
 
 - Opção de compra direta.
 
+- Opção de remover produtos do carrinho.
+
 - Simulação de compra finalizada: Exibe uma mensagem indicando que a compra foi realizada com sucesso.
 
 #### Tecnologias Utilizadas
