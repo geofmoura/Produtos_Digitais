@@ -123,7 +123,3 @@ git push origin feature-nome-da-tarefa
 
 Cada colaborador deve seguir esse fluxo para evitar conflitos no código e manter a organização do repositório.
 
-#### Licença
-
-Este projeto está sob a licença MIT.
-
