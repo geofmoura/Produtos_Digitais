@@ -40,21 +40,22 @@ Este é um sistema de vendas de produtos digitais desenvolvido com HTML, CSS, PH
 
 /vendas-produtos-digitais
 
-│── /public           # Arquivos públicos (CSS, JS, imagens)
+/templates
+- index.html
+- login.html
+- cadastro.html
+- carrinho.html
 
-│── /src              # Código-fonte principal
+/static
+- styles.css
+- app.js
 
-│   │── /controllers  # Lógica de negócio
+/database
+- database.db
 
-│   │── /models       # Manipulação de dados no banco
-
-│   │── /views        # Arquivos de interface (HTML e PHP)
-
-│── /database         # Scripts SQL para criação das tabelas
-
-│── index.php         # Arquivo inicial do sistema
-
-│── README.md         # Documentação do projeto
+/server
+- router.php (analise)
+- database.php
 
 ```
 
