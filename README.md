@@ -34,7 +34,7 @@ Este é um sistema de vendas de produtos digitais desenvolvido com HTML, CSS, PH
 
 - Back-end: PHP
 
-- Banco de Dados: SQL (MySQL ou PostgreSQL, a definir)
+- Banco de Dados: SQLITE3
 
 #### Estrutura do Projeto
 
