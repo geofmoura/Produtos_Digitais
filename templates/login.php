@@ -11,9 +11,11 @@
         <br><br>
         <input type="password" name="senha" placeholder="Senha" required>
         <br><br>
-        <button type="submit">Entrar</button>
+        <a href="vendas.php"><button type="submit">Entrar</button></a>
     </form>
     <p id="mensagemLogin"></p>
+    <a href="../index.php"><button>Voltar</button></a>
+
 </body>
 
 </html>
