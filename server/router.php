@@ -8,11 +8,11 @@ $page = $_GET["page"] ?? "index";
 $private_pages = ["carrinho", "vendas"];
 
 if (in_array($page, $private_pages) && !isset($_SESSION["user_id"])) {
-    header("Location: index.html");
+    header("Location: index.php");
     exit;
 }
 
-$file = __DIR__ . "/../templates/" . $page . ".html";
+$file = __DIR__ . "/../templates/" . $page . ".php";
 
 if (file_exists($file)) {
     readfile($file);
