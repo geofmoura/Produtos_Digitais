@@ -6,13 +6,7 @@
     <title>Bem-vindo</title>
 </head>
 <body>
-<a href="./login">
-    <button>Login</button>
-</a>
-
-<a href="./cadastro.php">
-    <button>Cadastro</button>
-</a>
-
+<a href="server/router.php?page=login"><button>Login</button></a>
+<a href="server/router.php?page=cadastro"><button>Cadastro</button></a>
 </body>
 </html>
