@@ -7,10 +7,12 @@ $page = $_GET["page"] ?? "index";
 $private_pages = ["carrinho", "vendas"];
 
 
-if (isset($_SESSION["user_id"])) {
-    header("Location: ../server/router.php?page=vendas");
+if (in_array($page, $private_pages) && !isset($_SESSION["user_id"])) {
+    // Se a página for privada e o usuário não estiver logado, redireciona para login
+    header("Location: index.php");
     exit;
 }
+
 
 $file = __DIR__ . "/../templates/" . $page . ".php";
 
