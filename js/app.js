@@ -1,54 +1,48 @@
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("Script carregado!");
+document.addEventListener("DOMContentLoaded", function() {
+    const loginForm = document.getElementById("formLogin");
 
-    const formCadastro = document.getElementById("formCadastro");
+    if (loginForm) {
+        loginForm.addEventListener("submit", async function(event) {
+            event.preventDefault();
+            
+            // Coletar dados do formulário
+            const formData = {
+                action: "login",
+                email: loginForm.email.value,
+                senha: loginForm.senha.value
+            };
 
-    if (formCadastro) {
-        formCadastro.addEventListener("submit", async (e) => {
-            e.preventDefault(); // Impede o comportamento padrão do formulário
-
-            const formData = new FormData(formCadastro);
-            formData.append("action", "register");
+            console.log("Dados sendo enviados:", formData);
 
             try {
                 const response = await fetch("../server/controller.php", {
                     method: "POST",
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
                 });
 
-                const result = await response.json();
-                console.log(result);
+                console.log("Resposta recebida (crua):", response);
 
-                document.getElementById("mensagemCadastro").textContent = 
-                    result.status === "success" ? "Cadastro realizado com sucesso!" : "Erro ao cadastrar.";
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log("Resposta parseada:", result);
+
+                if (result.status === "success") {
+                    console.log("Redirecionando para:", result.redirect);
+                    window.location.href = result.redirect;
+                } else {
+                    console.error("Erro no login:", result.message);
+                    alert(result.message || "Erro ao fazer login");
+                }
             } catch (error) {
-                console.error("Erro ao enviar requisição:", error);
+                console.error("Erro completo:", error);
+                alert("Falha na comunicação com o servidor. Verifique o console para detalhes.");
             }
         });
-    } else {
-        console.error("Elemento #formCadastro não encontrado.");
     }
 });
-
-const formLogin = document.getElementById("formLogin");
-
-if (formLogin) {
-    formLogin.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        
-        const formData = new FormData(formLogin);
-        formData.append("action", "login");
-
-        const response = await fetch("../server/controller.php", {
-            method: "POST",
-            body: formData
-        });
-
-        const result = await response.json();
-        if (result.status === "success") {
-            window.location.href = "router.php?page=vendas";
-        } else {
-            document.getElementById("mensagemLogin").textContent = "E-mail ou senha incorretos.";
-        }
-    });
-}
