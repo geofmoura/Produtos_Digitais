@@ -1,32 +1,80 @@
-<!-- Conexão do BDD -->
 <?php
 header("Content-Type: application/json");
 session_start();
 require_once "database.php";
 
-var_dump($_POST);
+// Ativar logs detalhados para debug
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $action = $_POST["action"] ?? "";
+try {
+    $db = new Database();
+    $pdo = $db->getPdo();
 
-    if ($action === "register") {
-        $nome = $_POST["nome"] ?? "";
-        $email = $_POST["email"] ?? "";
-        $senha = password_hash($_POST["senha"] ?? "", PASSWORD_DEFAULT);
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true) ?? $_POST;
+        
+        $action = $data["action"] ?? "";
 
-        $db = new SQLite3("../database/database.db");
-        $stmt = $db->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
-        $stmt->bindValue(1, $nome, SQLITE3_TEXT);
-        $stmt->bindValue(2, $email, SQLITE3_TEXT);
-        $stmt->bindValue(3, $senha, SQLITE3_TEXT);
+        if ($action === "login") {
+            $email = $data["email"] ?? "";
+            $senha = $data["senha"] ?? "";
 
-        if ($stmt->execute()) {
-            echo json_encode(["status" => "success"]);
-        } else {
-            echo json_encode(["status" => "error"]);
+            // Debug: Registrar tentativa de login
+            error_log("Tentativa de login para: $email");
+
+            $stmt = $pdo->prepare("SELECT id, email, senha FROM usuarios WHERE email = ?");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch();
+
+            if ($user) {
+                if (password_verify($senha, $user["senha"])) {
+                    $_SESSION["user_id"] = $user["id"];
+                    $_SESSION["user_email"] = $user["email"];
+
+                    // Debug: Login bem-sucedido
+                    error_log("Login bem-sucedido para: $email");
+
+                    echo json_encode([
+                        "status" => "success", 
+                        "redirect" => "vendas.php",
+                        "user" => ["id" => $user["id"], "email" => $user["email"]]
+                    ]);
+                } else {
+                    // Debug: Senha incorreta
+                    error_log("Senha incorreta para: $email");
+                    echo json_encode([
+                        "status" => "error",
+                        "message" => "Senha incorreta"
+                    ]);
+                }
+            } else {
+                // Debug: Email não encontrado
+                error_log("Email não encontrado: $email");
+                echo json_encode([
+                    "status" => "error",
+                    "message" => "Usuário não encontrado"
+                ]);
+            }
+            exit;
         }
-
-        exit;
     }
+
+    // Se nenhuma ação válida for detectada
+    echo json_encode([
+        "status" => "error",
+        "message" => "Requisição inválida"
+    ]);
+
+} catch (PDOException $e) {
+    // Log do erro completo
+    error_log("Erro no controller: " . $e->getMessage());
+    
+    echo json_encode([
+        "status" => "error",
+        "message" => "Erro no servidor",
+        "debug" => $e->getMessage()
+    ]);
 }
 ?>
